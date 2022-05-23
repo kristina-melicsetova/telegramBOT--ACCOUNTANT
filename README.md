@@ -1,20 +1,10 @@
 # telegramBOT--ACCOUNTANT
-import sqlite3
+import telebot
 
-try :
-    conn = sqlite3.connect ("accountant.db")
-    cursor = conn.cursor()
+MypyBot = telebot.TeleBot('TOKEN', parse_mode = None)
 
-    # создаем пользователя с user_id = 1000
-    cursor.execute ("INSERT OR IGNORE INTO `users` (`users_ID`) VALUES(?)",(100,))
-except sqlite3.Error as error:
-    #Считываем пользователей
-    users = cursor.execute("SELECT * FROM `users`")
-    print(users.fetchall())
-    # подтверждаем изменения 
-    conn.commit()
+@MypyBot.message_handler(content_types = ['text'])
+def replyer(message):
+    MypyBot.reply_to(message, message.text)
 
-    print('Error', error)
-finally:
-    if (conn):
-        conn.close()
+MypyBot.polling()
